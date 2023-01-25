@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+    <style>
+        .verde {
+            background-color: green;
+        }
+
+        .negrito {
+            font-weight: bold;
+        }
+
+        .azul {
+            background-color: blue;
+        }
+
+        .vermelho {
+            background-color: red;
+        }
+        
+        .branco {
+            background-color: white;
+        }
+
+        .borda {
+            border: 1px solid;
+        }
+
+        .div-principal {
+            width: 200px;
+            height: 200px;
+        }
+
+        .div-comum {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="app">
+        {{ mensagem }}<br>
+        Valor total: {{valorTotal}}<br>
+        Logado: {{logado}}<br>
+        Hobbie: {{ hobbies[2] }}, {{ hobbies[1]}}, etc.<br>
+        Perfil: {{ perfil.site }}, {{ perfil.cursos[1].nome}}<br>
+
+        <hr>
+
+        {{ somar() }}<br>
+        {{ subtrair() }}<br>
+        {{ multiplicar() }}<br>
+        {{ dividir() }}<br>
+        {{ numeroAleatorio() }}<br>
+
+        <hr>
+
+        <a href="https://www.google.com.br" v-bind:href="perfil.site">Site</a>
+        <p class="negrito" :class="cor">Entendendo a diretiva v-bind</p>
+        <input type="text" v-bind:placeholder="instrucaoDePreenchimento" v-bind:value="valor">
+        <input type="checkbox" v-bind:checked="check">
+
+        <br>
+        <hr>
+
+        <input type="text" @keyup="imprimirTexto('Enviando parâmetro', 5, xyz)">
+        <button @click="mensagemAlerta($event, 'texto', 100)">Botão</button>
+
+        <div class="borda div-principal">
+            Cor: {{ cor }}
+        </div>
+        <div @click="mudarCor('verde')" class="borda div-comum"></div>
+        <div class="borda div-comum" @mouseover="mudarCor('azul')" @mouseout="mudarCor('vermelho')"></div>
+        <div class="borda div-comum" @mousemove="coordenadas($event)"></div>
+    </div>
+
+
+    <script>
+
+        /**
+         * el = element.
+         * # = para selecionar por ID.
+         * . = para selecionar por classe.
+         */
+        options = {
+            el: '#app',
+            data: {
+                mensagem: 'Primeiro template VueJS',
+                valorTotal: 199.99,
+                logado: false,
+                n1: 10,
+                n2: 5,
+                // V-bind: forma mais curta "Sugar".
+                // Em vez de usar v-bind:elemento, é possível usar apenas o :elemento.
+                cor: 'branco',
+                posicaoX: 0,
+                posicaoY: 0,
+                instrucaoDePreenchimento: 'Placeholder - Diretiva v-bind',
+                valor: 'Entendendo a diretiva v-bind',
+                check: true,
+                xyz: true,
+                hobbies: [
+                    'Jogar videogame / Jogos online',
+                    'Ouvir música',
+                    'Cinema',
+                    'Assistir futebol'
+                ],
+                perfil: {
+                    nome: 'Daniel',
+                    site: 'https://github.com/danielfss',
+                    idade: 26,
+                    cursos: [
+                        {
+                            nome: 'Técnico em Redes de Computadores',
+                            duracao: '4 semestres'
+                        },
+                        {
+                            nome: 'Sistemas de Informação',
+                            duracao: '8 semestres'
+                        }
+                    ]
+                }
+            },
+            methods: {
+                // Forma convencional de declarar função no JS
+                somar: function somar() {
+                    return this.n1 + this.n2;
+                },
+                // Forma anônima
+                subtrair: function() {
+                    return this.n1 - this.n2;
+                },
+                // Forma Arrow function
+                multiplicar: () => {
+                    console.log('Escopo Window - multiplicar', this)
+                    return this.n1 * this.n2;
+                    // Arrow Function não tem Contexto Léxico para escopo de objetos, somente escopo global e escopo de função, pois o this está referenciando a Window global e não o objeto Vue.
+                },
+                // Forma mais enxuta, definindo os pares de chave-valor
+                dividir() {
+                    console.log('Escopo Vue - dividir', this)
+                    let f = () => {
+                        console.log('Teste de escopo - f dentro de dividir', this)
+                        return 'Teste';
+                    }
+                    console.log(f());
+                    return this.n1 / this.n2;
+                },
+                numeroAleatorio() {
+                    return Math.random();
+                },
+                imprimirTexto(t, n, x) {
+                    console.log(t);
+                    console.log(n);
+                    console.log(x);
+                },
+                mensagemAlerta(evento, param1, param2) {
+                    alert('Mensagem de alerta');
+                    console.log(evento, param1, param2);
+                },
+                mudarCor(c) {
+                    this.cor = c;
+                },
+                coordenadas(e) {
+                    this.posicaoX = e.clientX;
+                    this.posicaoY = e.clientY;
+                }
+            }
+        }
+
+        const vm = new Vue(options); // vm = ViewModel
+        console.log(vm)
+    </script>
+
+</body>
+</html>

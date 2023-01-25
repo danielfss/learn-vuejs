@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <p>{{ contador }}</p>
+        <button v-on:click="somar(5), $event">Somar 1</button>
+        <p v-on:mousemove="atualizarXY">
+            Mouse: {{ x }} e {{ y }}
+            <span v-on:mousemove="parar">PARAR AQUI!!!!!</span>
+            <!-- Podemos parar um comportamento padrão, utilizando o modificador de eventos "stop" -->
+            <span v-on:mousemove.stop="">PARAR AQUI!!!!!</span>
+        </p>
+        <!-- Podemos prevenir um comportamento padrão, utilizando o modificador de eventos "prevent" -->
+        <a v-on:click.prevent href="http://google.com">Google</a>
+        <a v-on:click="naoNavegar" href="http://google.com">Google</a>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                contador: 0,
+                x: 0,
+                y: 0
+            },
+            methods: {
+                // Por padrão sempre passamos o parâmetro "event" implicitamente ou explicitamente colocando o nome como convenção "event", "e" ou qualquer outro nome.
+                // Se não fizermos nada com esse parâmetro, ele sempre chamará o evento MouseEvent, mas também podemos especificar os nossos próprios parâmetros na função.
+                // Ao criarmos nosso próprio parâmetro, o evento padrão já não é mais chamado, mas ainda podemos chamá-lo lá na nossa tag com a palavra reservada "$event".
+                somar(passo, ev) {
+                    console.log(passo, ev);
+                    this.contador += passo
+                },
+                atualizarXY(event) {
+                  console.log(event)
+                  this.x = event.clientX
+                  this.y = event.clientY
+                },
+                parar(event) {
+                    event.stopPropagation()
+                },
+                naoNavegar(event) {
+                    event.preventDefault()
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

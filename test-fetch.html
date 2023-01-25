@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./vue.js"></script>
+  </head>
+  <body>
+
+    <div id="fetch">
+      <h2>Lista de equipamentos</h2>
+
+      <ul>
+        <li v-for="state in states">{{ state.nome }} - {{ state.sigla }}</li>
+      </ul>
+    </div>
+
+    <script>
+      let app = new Vue({
+        el: "#fetch",
+        data: {
+          states: [],
+        },
+        created() {
+          fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+            .then((response) => {
+              response.json().then((data) => {
+                this.states = data;
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          console.log("Valor selecionado - " + this.valueChoiced);
+        },
+      });
+    </script>
+  </body>
+</html>

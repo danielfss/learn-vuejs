@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <h1>App Contador</h1>
+    <button v-on:click="diminuirValor(5)">- (5)</button>
+    <button v-on:click="diminuir">-</button>
+        <span v-bind="numero">{{numero}}</span>
+    <button v-on:click="somar">+</button>
+    <button v-on:click="somarValor(5)">+ (5)</button>
+
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                numero: 0,
+            }
+        },
+        methods: {
+            somar() {
+                this.numero += 1;
+            },
+            diminuir() {
+                this.numero--;
+            },
+            somarValor(valor) {
+                this.numero += valor;
+            },
+            diminuirValor(valor) {
+                this.numero -= valor;
+            }
+        }
+    })
+</script>
+</body>
+</html>
